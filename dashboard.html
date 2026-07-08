@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meridian &mdash; Hospital Management Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div id="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <svg viewBox="0 0 40 24" xmlns="http://www.w3.org/2000/svg"><polyline points="0,14 10,14 14,4 19,20 23,14 40,14" fill="none" stroke="#0E7C86" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>MERIDIAN</span>
+    </div>
+    <nav class="navlist" id="navlist">
+      <div class="navlink active" data-target="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Dashboard</div>
+      <div class="navlink" data-target="patients"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-4 3-6.5 7-6.5s7 2.5 7 6.5"/></svg>Patients</div>
+      <div class="navlink" data-target="doctors"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3v4a3 3 0 0 0 6 0V3"/><path d="M6 21v-4a6 6 0 0 1 12 0v4"/><circle cx="17" cy="9" r="1.2"/></svg>Doctors</div>
+      <div class="navlink" data-target="appointments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="1.5"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>Appointments</div>
+      <div class="navlink" data-target="billing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="1.5"/><path d="M8 9h8M8 13h8M8 17h4"/></svg>Billing</div>
+      <div class="navlink" data-target="departments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21V9l8-6 8 6v12"/><path d="M9 21v-6h6v6"/></svg>Departments</div>
+    </nav>
+    <div class="side-foot"><span>v1.0 demo</span><span id="side-clock">--:--</span></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        <input placeholder="Search patients, doctors, records..." id="global-search">
+      </div>
+      <div class="userchip">
+        <div class="avatar" id="user-initials">AD</div>
+        <div class="who"><b id="user-name">Admin User</b><span id="user-role">ADMINISTRATOR</span></div>
+        <a class="logout" href="index.html">Sign out</a>
+      </div>
+    </div>
+
+    <!-- ============ DASHBOARD ============ -->
+    <section class="section active" id="sec-dashboard">
+      <div class="hero">
+        <div class="hero-top">
+          <div>
+            <h2 id="greeting">Good day, Admin.</h2>
+            <p>Here's how Meridian General is running right now.</p>
+          </div>
+          <div class="hero-clock"><b id="hero-time">--:--:--</b><span id="hero-date">Loading date...</span></div>
+        </div>
+        <div class="pulse-wrap">
+          <svg viewBox="0 0 600 60" preserveAspectRatio="none">
+            <polyline class="pulse-line" points="0,30 40,30 55,30 65,8 75,52 85,30 100,30 140,30 155,30 165,14 175,46 185,30 200,30 240,30 255,30 265,8 275,52 285,30 300,30 340,30 355,30 365,14 375,46 385,30 400,30 440,30 455,30 465,8 475,52 485,30 500,30 540,30 555,30 565,14 575,46 585,30 600,30"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="grid-stats">
+        <div class="stat-card"><div class="label"><span class="dot"></span>Patients</div><div class="value">1,284</div><div class="delta">&#9650; 4.2% this month</div></div>
+        <div class="stat-card"><div class="label"><span class="dot"></span>Doctors</div><div class="value">42</div><div class="delta">&#9650; 2 new joins</div></div>
+        <div class="stat-card"><div class="label"><span class="dot"></span>Staff</div><div class="value">96</div><div class="delta">&mdash; steady</div></div>
+        <div class="stat-card"><div class="label"><span class="dot"></span>Today's Appts</div><div class="value">37</div><div class="delta">&#9650; 6 vs yesterday</div></div>
+        <div class="stat-card"><div class="label"><span class="dot"></span>Revenue (MTD)</div><div class="value">&#8377;8.4L</div><div class="delta">&#9650; 11.6%</div></div>
+        <div class="stat-card alert"><div class="label"><span class="dot"></span>Emergency</div><div class="value">3</div><div class="delta down">&#9650; active cases</div></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <h3>Monthly patient growth</h3>
+          <p class="sub">New registrations, last 6 months</p>
+          <canvas id="chartGrowth"></canvas>
+        </div>
+        <div class="panel">
+          <h3>Appointment status</h3>
+          <p class="sub">Today, all departments</p>
+          <canvas id="chartStatus"></canvas>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="panel">
+          <h3>Department-wise patients</h3>
+          <p class="sub">Current caseload</p>
+          <canvas id="chartDept"></canvas>
+        </div>
+        <div class="panel">
+          <h3>Revenue trend</h3>
+          <p class="sub">Last 6 months, &#8377; thousands</p>
+          <canvas id="chartRevenue"></canvas>
+        </div>
+        <div class="panel">
+          <h3>Patient age distribution</h3>
+          <p class="sub">Across all departments</p>
+          <canvas id="chartAge"></canvas>
+        </div>
+      </div>
+
+      <div class="grid-2" style="grid-template-columns:1fr;">
+        <div class="panel">
+          <h3>Bed availability</h3>
+          <p class="sub">120 total beds &middot; live occupancy</p>
+          <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
+            <div class="bed-box">
+              <div class="mono" style="font-size:11px;color:var(--slate);">GENERAL</div>
+              <div class="mono" style="font-size:20px;font-weight:600;">62 / 70</div>
+            </div>
+            <div class="bed-box">
+              <div class="mono" style="font-size:11px;color:var(--slate);">ICU</div>
+              <div class="mono" style="font-size:20px;font-weight:600;">14 / 18</div>
+            </div>
+            <div class="bed-box">
+              <div class="mono" style="font-size:11px;color:var(--slate);">EMERGENCY</div>
+              <div class="mono" style="font-size:20px;font-weight:600;">9 / 12</div>
+            </div>
+            <div class="bed-box">
+              <div class="mono" style="font-size:11px;color:var(--slate);">PEDIATRIC</div>
+              <div class="mono" style="font-size:20px;font-weight:600;">15 / 20</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PATIENTS ============ -->
+    <section class="section" id="sec-patients">
+      <div class="sec-head">
+        <div><h2>Patients</h2><p>Register, update, and search patient records.</p></div>
+        <button class="btn" onclick="openModal('patient')">+ Register Patient</button>
+      </div>
+      <div class="toolbar">
+        <input id="patient-search" placeholder="Search by name or ID..." style="width:260px;" oninput="filterPatients()">
+        <select id="patient-dept-filter" onchange="filterPatients()">
+          <option value="">All departments</option>
+        </select>
+      </div>
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th>Age / Gender</th><th>Department</th><th>Doctor</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="patients-tbody"></tbody>
+      </table>
+    </section>
+
+    <!-- ============ DOCTORS ============ -->
+    <section class="section" id="sec-doctors">
+      <div class="sec-head">
+        <div><h2>Doctors</h2><p>Profiles, department assignment, and current availability.</p></div>
+        <button class="btn" onclick="openModal('doctor')">+ Add Doctor</button>
+      </div>
+      <div class="doc-grid" id="doctors-grid"></div>
+    </section>
+
+    <!-- ============ APPOINTMENTS ============ -->
+    <section class="section" id="sec-appointments">
+      <div class="sec-head">
+        <div><h2>Appointments</h2><p>Book, reschedule, or cancel &mdash; and check doctor availability.</p></div>
+      </div>
+      <div class="grid-2">
+        <div>
+          <table>
+            <thead><tr><th>Patient</th><th>Doctor</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="appts-tbody"></tbody>
+          </table>
+        </div>
+        <div class="form-card">
+          <h3 style="margin-top:0;">Book an appointment</h3>
+          <p class="sub" style="margin-bottom:16px;">Check availability before confirming.</p>
+          <div class="form-grid">
+            <div class="field2"><label>Patient name</label><input id="bk-patient" placeholder="e.g. Ravi Kumar"></div>
+            <div class="field2"><label>Doctor</label>
+              <select id="bk-doctor"></select>
+            </div>
+            <div class="field2"><label>Date</label><input type="date" id="bk-date"></div>
+            <div class="field2"><label>Time</label><input type="time" id="bk-time"></div>
+          </div>
+          <button class="btn" style="margin-top:16px;width:100%;" onclick="bookAppointment()">Confirm booking</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BILLING ============ -->
+    <section class="section" id="sec-billing">
+      <div class="sec-head">
+        <div><h2>Billing</h2><p>Generate invoices and track payment status.</p></div>
+        <button class="btn" onclick="openModal('bill')">+ Generate Bill</button>
+      </div>
+      <table>
+        <thead><tr><th>Invoice #</th><th>Patient</th><th>Service</th><th>Amount</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="bills-tbody"></tbody>
+      </table>
+    </section>
+
+    <!-- ============ DEPARTMENTS ============ -->
+    <section class="section" id="sec-departments">
+      <div class="sec-head">
+        <div><h2>Departments</h2><p>Caseload and staffing across Meridian General.</p></div>
+        <button class="btn ghost" onclick="openModal('department')">+ Add Department</button>
+      </div>
+      <table>
+        <thead><tr><th>Department</th><th>Head Doctor</th><th>Doctors</th><th>Active Patients</th><th>Beds</th></tr></thead>
+        <tbody id="dept-tbody"></tbody>
+      </table>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============ MODAL (Add Patient / Add Doctor / Generate Bill) ============ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="modal-title">Add</h3>
+      <div class="modal-close" onclick="closeModal()">&#10005;</div>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Saved.</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
