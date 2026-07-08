@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meridian &mdash; Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-mark">
+      <svg viewBox="0 0 40 24" xmlns="http://www.w3.org/2000/svg"><polyline points="0,14 10,14 14,4 19,20 23,14 40,14" fill="none" stroke="#0E7C86" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>MERIDIAN</span>
+    </div>
+    <h1>Sign in to the hospital dashboard</h1>
+
+    <div class="role-row">
+      <button type="button" class="role-btn active" data-role="Administrator">ADMIN</button>
+      <!-- <button type="button" class="role-btn" data-role="Doctor">DOCTOR</button>
+      <button type="button" class="role-btn" data-role="Receptionist">RECEPTION</button> -->
+    </div>
+
+    <div class="field">
+      <label>Email</label>
+      <input id="login-email" type="text" placeholder="you@meridianhospital.org" value="admin@meridianhospital.org">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input id="login-pass" type="password" placeholder="********" value="********">
+    </div>
+
+    <button class="login-btn" id="login-btn">SIGN IN &rarr;</button>
+    <p class="login-note">Demo build &mdash; any credentials will work.</p>
+  </div>
+</div>
+
+<script>
+  let selectedRole = "Administrator";
+
+  document.querySelectorAll('.role-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedRole = btn.dataset.role;
+    });
+  });
+
+  document.getElementById('login-btn').addEventListener('click', ()=>{
+    // Pass the chosen role to the dashboard via the URL.
+    // No real authentication here -- this is a UI-only demo.
+    window.location.href = "dashboard.html?role=" + encodeURIComponent(selectedRole);
+  });
+</script>
+</body>
+</html>
