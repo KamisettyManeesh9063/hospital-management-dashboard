@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meridian &mdash; Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/data.js"></script>
+</head>
+<body>
+
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-mark">
+      <svg viewBox="0 0 40 24" xmlns="http://www.w3.org/2000/svg"><polyline points="0,14 10,14 14,4 19,20 23,14 40,14" fill="none" stroke="#0E7C86" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>MERIDIAN</span>
+    </div>
+    <h1>Sign in to the hospital dashboard</h1>
+
+    <div class="field">
+      <label>Email</label>
+      <input id="login-email" type="text" placeholder="you@meridianhospital.org">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input id="login-pass" type="password" placeholder="Enter password">
+    </div>
+
+    <p class="login-error" id="login-error">Incorrect email or password.</p>
+
+    <button class="login-btn" id="login-btn">SIGN IN &rarr;</button>
+    <!-- <p class="login-note">
+      Admin: admin@meridianhospital.org / Admin@321123<br>
+      Reception: reception@meridianhospital.org / Reception@321123<br>
+      Doctors: firstname.lastname@meridianhospital.org / Doctor@321123<br>
+      <span style="opacity:.75;">(e.g. anita.rao@meridianhospital.org &mdash; one account per doctor)</span>
+    </p> -->
+  </div>
+</div>
+
+<script>
+  const DOCTOR_PASSWORD = "Doctor@321123";
+
+  // Static accounts for Admin and Reception, plus one generated account per doctor
+  // (e.g. "Dr. Anita Rao" -> anita.rao@meridianhospital.org).
+  const ACCOUNTS = {
+    "admin@meridianhospital.org":     { password:"Admin@321123",     role:"Administrator", name:"Admin User" },
+    "reception@meridianhospital.org": { password:"Reception@321123", role:"Receptionist",   name:"Front Desk" },
+  };
+  doctors.forEach(d=>{
+    const emailName = d.name.replace(/^Dr\.\s*/i,'').trim().toLowerCase().split(/\s+/).join('.');
+    ACCOUNTS[emailName + "@meridianhospital.org"] = { password: DOCTOR_PASSWORD, role:"Doctor", name: d.name };
+  });
+
+  // Where each role lands immediately after logging in.
+  const LANDING_PAGE = {
+    Administrator: "dashboard.html",
+    Doctor: "patients.html",
+    Receptionist: "appointments.html",
+  };
+
+  document.getElementById('login-btn').addEventListener('click', ()=>{
+    const email = document.getElementById('login-email').value.trim().toLowerCase();
+    const password = document.getElementById('login-pass').value;
+    const errorEl = document.getElementById('login-error');
+    const account = ACCOUNTS[email];
+
+    if(account && account.password === password){
+      errorEl.classList.remove('show');
+      sessionStorage.setItem('meridianRole', account.role);
+      sessionStorage.setItem('meridianName', account.name);
+      window.location.href = LANDING_PAGE[account.role];
+    } else {
+      errorEl.classList.add('show');
+    }
+  });
+
+  document.getElementById('login-pass').addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter'){ document.getElementById('login-btn').click(); }
+  });
+</script>
+</body>
+</html>
